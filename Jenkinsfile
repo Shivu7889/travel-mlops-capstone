@@ -9,7 +9,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Setup Environment') {
             steps {
                 sh '''
                     python3 -m venv .jenkins-venv
@@ -17,6 +17,24 @@ pipeline {
 
                     pip install --upgrade pip
                     pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Preprocess Data') {
+            steps {
+                sh '''
+                    . .jenkins-venv/bin/activate
+
+                    python -c "from src.data.preprocessing import preprocess_all_data; preprocess_all_data(save=True)"
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                    . .jenkins-venv/bin/activate
 
                     python -m pytest tests -v
                 '''
@@ -47,7 +65,9 @@ pipeline {
             steps {
                 sh '''
                     kubectl rollout status deployment/travel-mlops-api --timeout=120s
+
                     kubectl get pods
+
                     kubectl get service travel-mlops-api
                 '''
             }
@@ -55,6 +75,7 @@ pipeline {
     }
 
     post {
+
         success {
             echo 'Travel MLOps CI/CD pipeline completed successfully!'
         }
