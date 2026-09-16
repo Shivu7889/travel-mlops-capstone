@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+.airflow-venv/
+.jenkins-venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Generated data
+data/processed/*
+
+# Model artifacts
+*.pkl
+*.joblib
+*.h5
+*.keras
+
+# Keep model directories
+!models/
+!models/**/
+!models/**/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Temporary files
+*.tmp
+*.temp

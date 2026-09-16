@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travel-mlops-api
+  labels:
+    app: travel-mlops-api
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: travel-mlops-api
+
+  template:
+    metadata:
+      labels:
+        app: travel-mlops-api
+
+    spec:
+      containers:
+        - name: travel-mlops-api
+          image: travel-mlops-api:latest
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 5000
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 20
